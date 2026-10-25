@@ -146,3 +146,8 @@ button:active{transform:scale(.97)}
 
 .friends-note{font-size:13px;color:var(--muted);text-align:left;margin:8px 0 4px;line-height:1.4}
 .friends-note b{color:var(--purple-deep)}
+
+.cell.given svg.cat{opacity:.92}
+.cell .zzz{position:absolute;top:2px;right:3px;font-size:calc(var(--cs) * .22);pointer-events:none;animation:zz 2s infinite}
+@keyframes zz{0%,100%{transform:translateY(0);opacity:.9}50%{transform:translateY(-2px);opacity:.6}}
+.toast{white-space:normal;max-width:85%;text-align:center}

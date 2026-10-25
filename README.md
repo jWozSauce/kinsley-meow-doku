@@ -20,6 +20,7 @@ Then visit `http://<your-computer-ip>:8080` on the phone and choose "Add to Home
 - Kitties can't touch, not even diagonally.
 - Tap once for an X, tap again to place a kitty, tap a kitty to remove it. Long-press an X to erase it.
 - 3 hearts per level. A wrong kitty costs a heart. Hints: 3 per level.
+- Early levels start with sleeping kitties already placed (2 on levels 1-10, 1 on 11-40, none after), like the real game.
 
 ## Personal touches
 

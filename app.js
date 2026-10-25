@@ -23,6 +23,7 @@
     'Paws-itively brilliant, {name}!', 'The kitties love you, {name}!', 'Super star, {name}! ⭐',
   ];
   const REGION_COLORS = ['#c9b6f5', '#ffd0a6', '#a9d8ff', '#bfe8b0', '#ffb8d0', '#fff3a0', '#a8ece0', '#ffa8a0', '#e0d6c3', '#d8bfff'];
+  const COLOR_NAMES = ['purple', 'orange', 'blue', 'green', 'pink', 'yellow', 'mint', 'coral', 'tan', 'lilac'];
   const AVATARS = ['🐱', '🦄', '🐶', '🐰', '🦊', '🐼', '🐸', '🐥'];
 
   function chapterFor(level) { return CHAPTERS.find(c => level >= c.from && level <= c.to) || CHAPTERS[CHAPTERS.length - 1]; }
@@ -31,6 +32,15 @@
   function todayKey() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
   function dateSeed() { return parseInt(todayKey().replace(/-/g, ''), 10); }
   const DAILY_UNLOCK = 21;
+  // Starting cats: the real game pre-places cats on early levels. Fewer as levels get harder.
+  function givensFor(mode, level) { return mode === 'daily' ? 1 : level <= 10 ? 2 : level <= 40 ? 1 : 0; }
+  // Pick the given cats from the biggest regions (they rule out the most cells, so the next move is clear).
+  function pickGivens(puzzle, k) {
+    const n = puzzle.n, sizes = new Array(n).fill(0);
+    puzzle.region.forEach(row => row.forEach(id => sizes[id]++));
+    const rows = [...Array(n).keys()].sort((r1, r2) => sizes[puzzle.region[r1][puzzle.solution[r1]]] - sizes[puzzle.region[r2][puzzle.solution[r2]]]).reverse();
+    return new Set(rows.slice(0, k).map(r => r * n + puzzle.solution[r]));
+  }
 
   // ---------- Cat artwork ----------
   function catSVG(style) {
@@ -97,7 +107,11 @@
     const n = mode === 'daily' ? 8 : sizeForLevel(level);
     const seed = mode === 'daily' ? dateSeed() : seedForLevel(level);
     const puzzle = P.generate(seed, n);
-    G = { mode, level, puzzle, cats: new Set(), xs: Array.from({ length: n }, () => new Array(n).fill(false)), hearts: 3, hints: 3, history: [], elapsed: 0, startTs: null, running: false, over: false, nameIdx: 0 };
+    const given = pickGivens(puzzle, Math.min(givensFor(mode, level), n - 2));
+    G = { mode, level, puzzle, cats: new Set(given), given, xs: Array.from({ length: n }, () => new Array(n).fill(false)), hearts: 3, hints: 3, history: [], elapsed: 0, startTs: null, running: false, over: false, nameIdx: 0 };
+    $('tip').textContent = level <= 3 && mode !== 'daily' ? '💤 Sleeping kitties are already home. Start with the smallest colored area!'
+      : given.size ? '💤 Sleeping kitties are already in the right spot. Tap once for ✕, tap again for a kitty.'
+      : 'Tap once for ✕, tap again to place a kitty';
     showScreen('game');
     buildBoard();
     renderHeader();
@@ -150,8 +164,9 @@
       const hasCat = G.cats.has(key);
       el.classList.remove('ax', 'x');
       if (hasCat) {
-        if (!el.querySelector('svg.cat')) { el.innerHTML = catSVG(S.settings.catStyle); el.classList.add('placed'); }
-        el.dataset.state = 'cat';
+        const isGiven = G.given.has(key);
+        if (!el.querySelector('svg.cat')) { el.innerHTML = catSVG(S.settings.catStyle) + (isGiven ? '<span class="zzz">💤</span>' : ''); el.classList.add(isGiven ? 'given' : 'placed'); }
+        el.dataset.state = isGiven ? 'given' : 'cat';
       } else {
         if (el.querySelector('svg.cat')) { el.innerHTML = ''; el.classList.remove('placed'); }
         if (blocked[r][c] && S.settings.autoX) { el.innerHTML = '<span class="mark">✕</span>'; el.classList.add('ax'); el.dataset.state = 'ax'; }
@@ -177,6 +192,7 @@
     if (!G || G.over) return;
     const n = G.puzzle.n, key = r * n + c, el = cellEls[r][c];
     const state = el.dataset.state;
+    if (state === 'given') { el.classList.remove('blocked-tap'); void el.offsetWidth; el.classList.add('blocked-tap'); toast('💤 This kitty is already home!'); return; }
     if (state === 'cat') { G.cats.delete(key); G.history.push({ t: 'uncat', r, c }); SFX.tap(); renderBoard(); return; }
     if (state === 'ax') { el.classList.remove('blocked-tap'); void el.offsetWidth; el.classList.add('blocked-tap'); SFX.tap(); return; }
     if (state === 'x') { tryPlaceCat(r, c); return; }
@@ -236,7 +252,9 @@
     const el = cellEls[h.r][h.c];
     el.classList.add('hint-glow');
     renderBoard();
-    toast(h.reason === 'only' ? '💡 Only one spot left in this area!' : '💡 A kitty belongs right here');
+    const colorName = COLOR_NAMES[G.puzzle.region[h.r][h.c] % COLOR_NAMES.length];
+    toast(h.reason === 'only' ? `💡 Every other spot in the ${colorName} area is blocked, so a kitty goes here!`
+      : `💡 The ${colorName} area has the fewest open spots. Its kitty goes here!`);
     setTimeout(() => { el.classList.remove('hint-glow'); if (!G.over && !G.cats.has(h.r * n + h.c)) tryPlaceCat(h.r, h.c, true); }, 1100);
   }
 
@@ -252,7 +270,7 @@
   function onWin() {
     G.over = true; pauseTimer();
     const secs = elapsedSec(); const n = G.puzzle.n;
-    cellEls.flat().forEach(el => { if (el.dataset.state === 'cat') el.classList.add('win'); });
+    cellEls.flat().forEach(el => { if (el.dataset.state === 'cat' || el.dataset.state === 'given') el.classList.add('win'); });
     SFX.win(); buzz([30, 40, 30, 40, 80]);
     const reward = 10 + (n - 5) * 5 + (G.mode === 'daily' ? 20 : 0);
     S.fish += reward;
