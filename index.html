@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#fff1f5">
+<meta name="robots" content="noindex, nofollow">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="assets/icon-192.png">
+<title>Kinsley's Meow Doku</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M12 30 L14 8 L30 20 Z M52 30 L50 8 L34 20 Z' fill='%23f7a8c4'/%3E%3Cellipse cx='32' cy='36' rx='24' ry='21' fill='%23f7a8c4'/%3E%3Cellipse cx='23' cy='36' rx='3.2' ry='4' fill='%233a2a2a'/%3E%3Cellipse cx='41' cy='36' rx='3.2' ry='4' fill='%233a2a2a'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ================= HOME ================= -->
+  <section id="home" class="screen active">
+    <header class="home-top">
+      <button class="avatar-btn" id="avatarBtn" aria-label="Profile">
+        <img id="avatarImg" src="" alt="" hidden>
+        <span id="avatarEmoji" class="avatar-emoji">🐱</span>
+      </button>
+      <div class="greeting" id="greeting">Hi, Kinsley!</div>
+      <button class="icon-btn gear" id="settingsBtn" aria-label="Settings">
+        <svg viewBox="0 0 24 24" width="26" height="26"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2.1-1.6a.5.5 0 0 0 .1-.7l-2-3.4a.5.5 0 0 0-.6-.2l-2.5 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 0-.5.4l-.4 2.7c-.6.2-1.2.6-1.7 1l-2.5-1a.5.5 0 0 0-.6.2l-2 3.4a.5.5 0 0 0 .1.7L4.6 11a7.5 7.5 0 0 0 0 2l-2.1 1.6a.5.5 0 0 0-.1.7l2 3.4c.1.2.4.3.6.2l2.5-1c.5.4 1.1.8 1.7 1l.4 2.6c0 .3.3.5.5.5h4c.3 0 .5-.2.5-.4l.4-2.7c.6-.2 1.2-.6 1.7-1l2.5 1c.2.1.5 0 .6-.2l2-3.4a.5.5 0 0 0-.1-.7L19.4 13zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>
+      </button>
+    </header>
+
+    <div class="cards">
+      <button class="card card-daily" id="dailyCard">
+        <h3>Daily<br>Challenge</h3>
+        <div class="card-art">
+          <svg class="lock" viewBox="0 0 64 64" width="64" height="64"><path d="M20 28v-7a12 12 0 0 1 24 0v7" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/><rect x="13" y="27" width="38" height="30" rx="7" fill="#fff"/><circle cx="32" cy="41" r="4" fill="#4b3ad0"/><rect x="30" y="42" width="4" height="7" rx="2" fill="#4b3ad0"/></svg>
+          <svg class="calendar" viewBox="0 0 64 64" width="70" height="70" hidden><rect x="8" y="12" width="48" height="46" rx="8" fill="#fff"/><rect x="8" y="12" width="48" height="14" rx="8" fill="#ffc2d6"/><rect x="8" y="20" width="48" height="6" fill="#ffc2d6"/><rect x="18" y="6" width="5" height="12" rx="2.5" fill="#7a5cff"/><rect x="41" y="6" width="5" height="12" rx="2.5" fill="#7a5cff"/><text id="dailyDay" x="32" y="50" text-anchor="middle" font-size="24" font-weight="700" fill="#5b3fd0" font-family="Fredoka, sans-serif">25</text></svg>
+        </div>
+        <div class="card-foot" id="dailyFoot">Unlock at Lv.21</div>
+      </button>
+
+      <button class="card card-streak" id="streakCard">
+        <h3>Streak</h3>
+        <div class="check-badge" id="streakCheck" hidden>
+          <svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="card-art">
+          <svg viewBox="0 0 100 100" width="96" height="96">
+            <g transform="rotate(-20 48 30)"><path d="M48 60 C40 40 40 20 52 8 C58 20 56 40 48 60Z" fill="#ffd34d"/><path d="M48 60 C46 40 48 22 52 8" stroke="#f0b000" stroke-width="2" fill="none"/></g>
+            <g transform="rotate(25 62 34)"><path d="M62 62 C56 44 58 26 68 14 C72 28 70 46 62 62Z" fill="#5fc9ff"/><path d="M62 62 C61 44 63 28 68 14" stroke="#2aa5e6" stroke-width="2" fill="none"/></g>
+            <circle cx="50" cy="68" r="26" fill="#f0703f"/>
+            <g stroke="#ffb08a" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".9">
+              <path d="M27 58 C40 48 60 48 73 58"/><path d="M25 66 C40 56 60 56 75 66"/><path d="M25 74 C40 64 60 64 75 74"/><path d="M28 82 C42 72 58 72 72 82"/><path d="M34 88 C44 80 56 80 66 88"/>
+              <path d="M38 45 C30 60 30 78 40 92"/><path d="M62 45 C70 60 70 78 60 92"/><path d="M50 42 C44 60 44 78 50 94"/>
+            </g>
+            <path d="M44 44 C40 36 60 36 56 44" stroke="#f0703f" stroke-width="7" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="pill" id="streakCount">0</div>
+      </button>
+    </div>
+
+    <div class="logo-wrap">
+      <div class="owner" id="ownerName">Kinsley's</div>
+      <div class="logo">
+        <div class="logo-line">
+          <span>ME</span>
+          <svg class="logo-o cat-o" viewBox="0 0 100 100"><path d="M14 52 L16 6 L46 26 Z M86 52 L84 6 L54 26 Z" fill="#8a6cf5"/><circle cx="50" cy="56" r="40" fill="#8a6cf5"/><circle cx="50" cy="60" r="22" fill="#fff1f5"/><circle cx="40" cy="58" r="4" fill="#4a3a6b"/><circle cx="60" cy="58" r="4" fill="#4a3a6b"/><path d="M46 68 q4 4 8 0" stroke="#4a3a6b" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+          <span>W</span>
+        </div>
+        <div class="logo-line">
+          <span>D</span>
+          <svg class="logo-o ring-o" viewBox="0 0 100 130"><circle cx="50" cy="45" r="36" fill="none" stroke="#ff8a5c" stroke-width="18"/><path d="M34 78 C 20 100, 30 120, 55 125" fill="none" stroke="#ff8a5c" stroke-width="14" stroke-linecap="round"/><path d="M30 92 l8 -6 M28 106 l10 -4" stroke="#fff1f5" stroke-width="5" stroke-linecap="round"/></svg>
+          <span>KU</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="play-btn" id="playBtn">Level 1</button>
+    <div class="wallet"><span class="fish-ico">🐟</span><span id="fishHome">0</span></div>
+    <div class="paw-deco">🐾</div>
+  </section>
+
+  <!-- ================= GAME ================= -->
+  <section id="game" class="screen">
+    <header class="game-top">
+      <button class="icon-btn" id="backBtn" aria-label="Back">
+        <svg viewBox="0 0 24 24" width="26" height="26"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="game-title" id="gameTitle">Level 1</div>
+      <div class="hearts" id="hearts"></div>
+      <div class="timer" id="timer">0:00</div>
+    </header>
+
+    <div class="board-wrap">
+      <div class="board" id="board"></div>
+    </div>
+
+    <div class="toolbar">
+      <button class="tool" id="undoBtn"><span class="tool-ico">↶</span><span>Undo</span></button>
+      <button class="tool" id="clearBtn"><span class="tool-ico">✕</span><span>Clear</span></button>
+      <button class="tool" id="hintBtn"><span class="tool-ico">💡</span><span>Hint</span><span class="badge" id="hintCount">3</span></button>
+    </div>
+    <p class="tip" id="tip">Tap once for ✕, tap again to place a kitty</p>
+  </section>
+
+  <!-- ================= MODALS ================= -->
+  <div class="modal" id="rulesModal">
+    <div class="sheet">
+      <h2>How to play</h2>
+      <ul class="rules">
+        <li><span class="rule-ico">🎨</span><div>Put <b>one kitty</b> in every <b>colored area</b>.</div></li>
+        <li><span class="rule-ico">↔️</span><div>Only <b>one kitty</b> in each <b>row</b> and <b>column</b>.</div></li>
+        <li><span class="rule-ico">🚫</span><div>Kitties can't <b>touch</b>, not even diagonally!</div></li>
+        <li><span class="rule-ico">👆</span><div>Tap once to mark <b>✕</b>. Tap again to place a <b>kitty</b>. Tap a kitty to remove it.</div></li>
+        <li><span class="rule-ico">❤️</span><div>You have <b>3 hearts</b>. A wrong kitty costs one heart.</div></li>
+      </ul>
+      <p class="friends-note">The kitties are named after Kinsley's friends: <b>Emily, Rainey, Lee Ander, Abby, Ellie Kate, Flora</b> and <b>Elijah</b> 💕 Each one has a chapter of levels named after them!</p>
+      <button class="btn primary" id="rulesOk">Got it!</button>
+    </div>
+  </div>
+
+  <div class="modal" id="winModal">
+    <div class="sheet win-sheet">
+      <div class="win-cats" id="winCats"></div>
+      <h2 id="winTitle">Purr-fect, Kinsley!</h2>
+      <div class="win-stats">
+        <div><div class="stat-label">Time</div><div class="stat-val" id="winTime">0:00</div></div>
+        <div><div class="stat-label">Reward</div><div class="stat-val" id="winReward">🐟 +10</div></div>
+      </div>
+      <div class="win-note" id="winNote"></div>
+      <button class="btn primary" id="nextBtn">Next Level</button>
+      <button class="btn ghost" id="winHomeBtn">Home</button>
+    </div>
+  </div>
+
+  <div class="modal" id="loseModal">
+    <div class="sheet">
+      <div class="sad-cat">😿</div>
+      <h2>Out of hearts!</h2>
+      <p class="muted">Don't worry, Kinsley. Every kitty finds their spot eventually.</p>
+      <button class="btn primary" id="continueBtn">Keep going (🐟 20)</button>
+      <button class="btn secondary" id="retryBtn">Try again</button>
+      <button class="btn ghost" id="loseHomeBtn">Home</button>
+    </div>
+  </div>
+
+  <div class="modal" id="settingsModal">
+    <div class="sheet">
+      <h2>Settings</h2>
+      <label class="row"><span>Player name</span><input id="nameInput" maxlength="16" type="text"></label>
+      <label class="row"><span>Sound</span><input type="checkbox" id="soundToggle" class="switch"></label>
+      <label class="row"><span>Vibration</span><input type="checkbox" id="vibeToggle" class="switch"></label>
+      <label class="row"><span>Auto ✕ marks</span><input type="checkbox" id="autoXToggle" class="switch"></label>
+      <label class="row"><span>Kitty style</span>
+        <select id="catStyle"><option value="pink">Pink with bow</option><option value="orange">Orange tabby</option><option value="gray">Gray kitty</option></select>
+      </label>
+      <button class="btn secondary" id="howToBtn">How to play</button>
+      <button class="btn danger" id="resetBtn">Reset progress</button>
+      <button class="btn primary" id="settingsClose">Done</button>
+    </div>
+  </div>
+
+  <div class="modal" id="avatarModal">
+    <div class="sheet">
+      <h2>Pick your picture</h2>
+      <div class="avatar-grid" id="avatarGrid"></div>
+      <button class="btn primary" id="avatarClose">Done</button>
+    </div>
+  </div>
+
+  <div class="modal" id="pauseModal">
+    <div class="sheet">
+      <h2>Paused</h2>
+      <button class="btn primary" id="resumeBtn">Resume</button>
+      <button class="btn ghost" id="pauseHomeBtn">Home</button>
+    </div>
+  </div>
+
+  <canvas id="confetti"></canvas>
+  <div class="toast" id="toast"></div>
+</div>
+<script src="puzzle.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
